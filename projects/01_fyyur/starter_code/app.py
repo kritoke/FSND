@@ -39,6 +39,7 @@ class Venue(db.Model):
     phone = db.Column(db.String(120))
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
+    genres = db.Column(db.String(120))
     website = db.Column(db.String(120))
     seeking_talent = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(500), nullable=True)
@@ -244,6 +245,8 @@ def create_venue_submission():
   seeking_talent = request.form.get('seeking_talent')
   seeking_description = request.form.get('seeking_description')
   venue = Venue(name=name, city=city, state=state, address=address, phone=phone, genres=genres, image_link=image_link, facebook_link=facebook_link, website=website, seeking_talent=seeking_talent, seeking_description=seeking_description)
+  db.session.add(venue)
+  db.session.commit()
   # on successful db insert, flash success
   flash('Venue ' + request.form['name'] + ' was successfully listed!')
   # TODO: on unsuccessful db insert, flash an error instead.
