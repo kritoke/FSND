@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, Response, flash, redirect, ur
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from models import db, Artist, Venue, Show
 import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
@@ -403,6 +404,20 @@ def create_artist_submission():
   # called upon submitting the new artist listing form
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
+  name = request.form.get('name')
+  city = request.form.get('city')
+  state = request.form.get('state')
+  phone = request.form.get('phone')
+  genres = request.form.getlist('genres')
+  image_link = request.form.get('image_link')
+  facebook_link = request.form.get('facebook_link')
+  website = request.form.get('website')
+  seeking_venue = request.form.get('seeking_venue')
+  seeking_description = request.form.get('seeking_description')
+  artist = Artist(name=name, city=city, state=state, phone=phone, genres=genres, image_link=image_link, facebook_link=facebook_link, website=website, seeking_venue=seeking_venue, seeking_description=seeking_description)
+  db.session.add(artist)
+  db.session.commit()
+
 
   # on successful db insert, flash success
   flash('Artist ' + request.form['name'] + ' was successfully listed!')
