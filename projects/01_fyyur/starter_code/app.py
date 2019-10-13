@@ -238,7 +238,7 @@ def create_venue_submission():
   state = request.form.get('state')
   address = request.form.get('address')
   phone = request.form.get('phone')
-  genres = request.form.get('genres')
+  genres = request.form.getlist('genres')
   image_link = request.form.get('image_link')
   facebook_link = request.form.get('facebook_link')
   website = request.form.get('website')
@@ -408,6 +408,8 @@ def edit_artist_submission(artist_id):
 def edit_venue(venue_id):
   form = VenueForm()
   venue = Venue.query.get(venue_id)
+  form.state.process_data(venue.state)
+  form.genres.process_data(venue.genres)
   return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
@@ -418,7 +420,7 @@ def edit_venue_submission(venue_id):
   venue.state = request.form.get('state')
   venue.address = request.form.get('address')
   venue.phone = request.form.get('phone')
-  venue.genres = request.form.get('genres')
+  venue.genres = request.form.getlist('genres')
   venue.image_link = request.form.get('image_link')
   venue.facebook_link = request.form.get('facebook_link')
   venue.website = request.form.get('website')
